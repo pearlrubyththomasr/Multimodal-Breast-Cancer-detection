@@ -230,9 +230,6 @@ curl -X POST http://localhost:8000/analyze/comprehensive \
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 📞 Support
-
-- **Email**: support@breastcancerai.com
-- **Issues**: GitHub Issues
 - **Documentation**: See `/docs` directory
 
 ## 🙏 Acknowledgments
