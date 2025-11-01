@@ -1,0 +1,8 @@
+# Placeholder for app icon
+# Replace this with actual icon files:
+# - icon.png (512x512 for Linux)
+# - icon.ico (for Windows)  
+# - icon.icns (for macOS)
+
+# You can generate these from a single PNG using online converters
+# or tools like electron-icon-builder

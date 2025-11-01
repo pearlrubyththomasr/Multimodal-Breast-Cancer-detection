@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Test - Breast Cancer AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .warning { background-color: #fff3cd; color: #856404; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        #results { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Breast Cancer AI - Frontend Test</h1>
+    
+    <div class="card">
+        <h2>Backend Connection Test</h2>
+        <p>This page tests if the backend API is accessible from the frontend.</p>
+        
+        <button onclick="testHealth()">Test Health Endpoint</button>
+        <button onclick="testModalities()">Test Available Modalities</button>
+        <button onclick="testAnalysis()">Test Sample Analysis</button>
+        <button onclick="testAll()">Run All Tests</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <div class="card">
+        <h2>Frontend Status</h2>
+        <div id="frontend-status">
+            <div class="status success">✅ Static HTML frontend loaded successfully</div>
+            <div class="status warning">⚠️ React frontend may still be compiling...</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Next Steps</h2>
+        <ol>
+            <li>Ensure backend is running: <code>python start_backend.py</code></li>
+            <li>Test backend health: <a href="http://localhost:8000/health" target="_blank">http://localhost:8000/health</a></li>
+            <li>Start React frontend: <code>python start_frontend.py</code></li>
+            <li>Access React app: <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></li>
+        </ol>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        function addResult(message, type = 'success') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            results.appendChild(div);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        async function testHealth() {
+            clearResults();
+            addResult('🔄 Testing health endpoint...', 'warning');
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Health Check: ${data.status}`, 'success');
+                    addResult(`📊 Available modalities: ${data.available_modalities?.join(', ') || 'None'}`, 'success');
+                } else {
+                    addResult(`❌ Health check failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Connection error: ${error.message}`, 'error');
+                addResult('💡 Make sure backend is running on port 8000', 'warning');
+            }
+        }
+        
+        async function testModalities() {
+            clearResults();
+            addResult('🔄 Testing modalities endpoint...', 'warning');
+            
+            try {
+                const response = await fetch(`${API_BASE}/models/available`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Modalities available: ${data.available_modalities?.join(', ') || 'None'}`, 'success');
+                    addResult(`🧬 Genomics: ${data.genomics_available ? 'Available' : 'Not available'}`, 'success');
+                    addResult(`🔬 Imaging: ${data.imaging_available ? 'Available' : 'Not available'}`, 'success');
+                    addResult(`📝 NLP: ${data.nlp_available ? 'Available' : 'Not available'}`, 'success');
+                } else {
+                    addResult(`❌ Modalities check failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Connection error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAnalysis() {
+            clearResults();
+            addResult('🔄 Testing sample analysis...', 'warning');
+            
+            const sampleData = {
+                patient_id: 'FRONTEND_TEST_001',
+                age: 45,
+                genomic_alterations: [
+                    { gene: 'BRCA1', mutation: 'Pathogenic', allele_frequency: 0.8 }
+                ],
+                biomarkers: {
+                    ER_status: 'Positive',
+                    HER2_status: 'Negative'
+                }
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/analyze/comprehensive`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(sampleData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    addResult(`✅ Analysis completed for patient: ${data.patient_id}`, 'success');
+                    addResult(`📈 Overall risk: ${(data.overall_risk_assessment?.overall_risk * 100)?.toFixed(1)}%`, 'success');
+                    addResult(`🎯 Risk category: ${data.overall_risk_assessment?.risk_category}`, 'success');
+                    addResult(`🔬 Modalities used: ${data.modalities_used?.join(', ') || 'None'}`, 'success');
+                } else {
+                    addResult(`❌ Analysis failed: ${response.status}`, 'error');
+                    addResult(`Error details: ${data.error || 'Unknown error'}`, 'error');
+                }
+            } catch (error) {
+                addResult(`❌ Analysis error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAll() {
+            clearResults();
+            addResult('🧪 Running comprehensive test suite...', 'warning');
+            
+            await testHealth();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testModalities();
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            await testAnalysis();
+            
+            addResult('🎉 All tests completed!', 'success');
+        }
+        
+        // Auto-test on page load
+        window.addEventListener('load', () => {
+            setTimeout(testHealth, 1000);
+        });
+    </script>
+</body>
+</html>

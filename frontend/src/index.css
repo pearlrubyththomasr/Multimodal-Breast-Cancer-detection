@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Base styles */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #fdf2f8;
+  color: #831843;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+/* Component styles */
+.btn-primary {
+  @apply bg-primary-600 hover:bg-primary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+.btn-secondary {
+  @apply bg-primary-100 hover:bg-primary-200 text-primary-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6;
+}
+
+.input-field {
+  @apply w-full px-3 py-2 border border-primary-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200;
+}
+
+.risk-high {
+  @apply bg-red-50 border-red-200 text-red-800;
+}
+
+.risk-moderate {
+  @apply bg-yellow-50 border-yellow-200 text-yellow-800;
+}
+
+.risk-low {
+  @apply bg-green-50 border-green-200 text-green-800;
+}
+
+.loading-spinner {
+  @apply animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #fce7f3;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #f9a8d4;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #f472b6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Medical chart styles */
+.recharts-tooltip-wrapper {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.recharts-tooltip-content {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+/* Medical color utilities */
+.text-medical-900 { color: #742a2a; }
+.text-medical-700 { color: #c53030; }
+.text-medical-600 { color: #e53e3e; }
+.text-medical-500 { color: #f56565; }
+.bg-medical-50 { background-color: #fef7f7; }
+.bg-medical-100 { background-color: #feecec; }
+.border-medical-200 { border-color: #fdd8d8; }
+.border-medical-300 { border-color: #fcb5b5; }
+
+/* Primary color utilities */
+.text-primary-600 { color: #db2777; }
+.text-primary-700 { color: #be185d; }
+.bg-primary-50 { background-color: #fdf2f8; }
+.bg-primary-100 { background-color: #fce7f3; }
+.bg-primary-600 { background-color: #db2777; }
+.border-primary-200 { border-color: #fbcfe8; }
