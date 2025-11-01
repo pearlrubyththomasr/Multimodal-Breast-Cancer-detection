@@ -70,6 +70,8 @@ logs/
 *.joblib
 *.h5
 *.pb
+*.pth
+backend/models/*.pth
 
 # Temporary files
 *.tmp
